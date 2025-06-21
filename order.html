@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Police Report - Municipal Records Processing</title>
+    <meta name="description" content="Order Phoenix police reports online. Fast, secure processing with automated tracking.">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Municipal Records Processing LLC</h1>
+            <p>Order Your Police Report Online</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="order.html" class="active">Order Report</a></li>
+                <li><a href="insurance.html">For Insurance</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="terms.html">Terms</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <h2>Request a Police Report</h2>
+        <p>Fill out the form below to request your Phoenix police report. Processing typically takes 48-72 hours.</p>
+
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        <div id="success-message" class="success-message" style="display: none;"></div>
+
+        <form id="order-form" class="order-form">
+            <h3>Report Details</h3>
+            
+            <div class="form-group">
+                <label for="report_type">Report Type*</label>
+                <select id="report_type" name="report_type" required>
+                    <option value="">Select Report Type</option>
+                    <option value="incident">Incident Report</option>
+                    <option value="accident">Accident Report</option>
+                    <option value="citation">Citation Report</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="case_number">Case/Report Number*</label>
+                <input type="text" id="case_number" name="case_number" required placeholder="e.g., 2024-123456">
+                <small>Enter the case number provided by the police department</small>
+            </div>
+
+            <div class="form-group">
+                <label for="incident_date">Incident Date (if known)</label>
+                <input type="date" id="incident_date" name="incident_date">
+            </div>
+
+            <div class="form-group">
+                <label for="incident_location">Incident Location</label>
+                <input type="text" id="incident_location" name="incident_location" placeholder="e.g., 1234 Main St, Phoenix, AZ">
+            </div>
+
+            <h3>Your Information</h3>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="first_name">First Name*</label>
+                    <input type="text" id="first_name" name="requestor_first_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name*</label>
+                    <input type="text" id="last_name" name="requestor_last_name" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address*</label>
+                <input type="email" id="email" name="requestor_email" required>
+                <small>We'll send your report to this email</small>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="requestor_phone" placeholder="(555) 123-4567">
+            </div>
+
+            <div class="form-group">
+                <label for="notes">Additional Notes</label>
+                <textarea id="notes" name="notes" rows="3" placeholder="Any additional information that might help us locate your report"></textarea>
+            </div>
+
+            <div class="price-summary">
+                <h3>Order Summary</h3>
+                <p>Police Report Request: <strong>$49.00</strong></p>
+                <p class="small">Secure payment processed by Stripe</p>
+            </div>
+
+            <button type="submit" id="submit-button" class="button button-primary">
+                <span id="button-text">Proceed to Payment</span>
+                <span id="spinner" class="spinner" style="display: none;">Processing...</span>
+            </button>
+
+            <p class="terms-notice">
+                By submitting this request, you agree to our <a href="terms.html" target="_blank">Terms of Service</a> 
+                and <a href="refunds.html" target="_blank">Refund Policy</a>.
+            </p>
+        </form>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>
+                <a href="contact.html">Contact Us</a> |
+                <a href="terms.html">Terms of Service</a> |
+                <a href="refunds.html">Refund Policy</a> |
+                <a href="https://github.com/nickinper/municipal-records-website" target="_blank">GitHub</a>
+            </p>
+            <p>&copy; 2024 Municipal Records Processing LLC. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="order.js"></script>
+</body>
+</html>
