@@ -51,9 +51,10 @@ Your website will be available at:
 
 ✅ **Key Pages**
 1. **Homepage** - Service overview, pricing, how it works
-2. **Contact** - Multiple contact methods, support info
-3. **Terms** - Complete terms of service
-4. **Refunds** - Clear refund and dispute policy
+2. **Insurance** - Dedicated page for insurance companies with ROI calculator
+3. **Contact** - Multiple contact methods, support info
+4. **Terms** - Complete terms of service
+5. **Refunds** - Clear refund and dispute policy
 
 ## Custom Domain (Optional - 1 hour)
 
