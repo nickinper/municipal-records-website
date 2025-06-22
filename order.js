@@ -1,5 +1,5 @@
 // Configuration
-const API_BASE_URL = 'http://localhost:8000'; // Update this for production
+const API_BASE_URL = 'https://municipal-records-api.onrender.com'; // Update this for production
 const STRIPE_PUBLISHABLE_KEY = 'pk_live_51RcKLYDVMiQlTjvyuYACM9VKA783Z2qaclFc90CO2JuukD1fGgGpeqP8RBR0xyp9vXDLml9Dy8aJADbR6Q6ujTCe00U5Xg0ORz';
 
 // Initialize Stripe
