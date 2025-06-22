@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Police Report - Municipal Records Processing</title>
+    <meta name="description" content="Order Phoenix police reports online. Fast, secure processing in 48 hours.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Municipal Records Processing</h1>
+                    <p class="text-sm text-gray-600">Professional Document Retrieval Services</p>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="index-new.html" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
+                    <a href="order-new.html" class="text-blue-600 font-medium">Order Report</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-blue-600 font-medium">Contact</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Progress Steps -->
+        <div class="mb-8">
+            <div class="flex items-center justify-center space-x-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold">1</div>
+                    <span class="ml-2 text-sm font-medium text-gray-900">Report Details</span>
+                </div>
+                <div class="flex-1 h-0.5 bg-gray-300 mx-2"></div>
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-semibold">2</div>
+                    <span class="ml-2 text-sm font-medium text-gray-500">Payment</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Title -->
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Order Phoenix Police Report</h2>
+            <p class="text-gray-600">48-hour processing • $49 per report</p>
+        </div>
+
+        <!-- Alerts -->
+        <div id="error-message" class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg hidden"></div>
+        <div id="success-message" class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg hidden"></div>
+
+        <!-- Order Form -->
+        <form id="order-form" class="bg-white rounded-xl shadow-lg p-8">
+            <!-- Report Information -->
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Report Information
+                </h3>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="report_type" class="block text-sm font-medium text-gray-700 mb-1">
+                            Report Type <span class="text-red-500">*</span>
+                        </label>
+                        <select id="report_type" name="report_type" required 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Select Type</option>
+                            <option value="incident">Incident Report</option>
+                            <option value="traffic_crash">Traffic Crash Report</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="case_number" class="block text-sm font-medium text-gray-700 mb-1">
+                            Case/Report Number <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="case_number" name="case_number" required placeholder="e.g., 2024-123456"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label for="incident_date" class="block text-sm font-medium text-gray-700 mb-1">
+                            Incident Date
+                        </label>
+                        <input type="date" id="incident_date" name="incident_date"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label for="incident_location" class="block text-sm font-medium text-gray-700 mb-1">
+                            Incident Location
+                        </label>
+                        <input type="text" id="incident_location" name="incident_location" placeholder="e.g., Main St & 1st Ave"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    Your Information
+                </h3>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="first_name" class="block text-sm font-medium text-gray-700 mb-1">
+                            First Name <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="first_name" name="requestor_first_name" required
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label for="last_name" class="block text-sm font-medium text-gray-700 mb-1">
+                            Last Name <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="last_name" name="requestor_last_name" required
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+                            Email Address <span class="text-red-500">*</span>
+                        </label>
+                        <input type="email" id="email" name="requestor_email" required
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">
+                            Phone Number
+                        </label>
+                        <input type="tel" id="phone" name="requestor_phone" placeholder="(555) 123-4567"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">
+                        Additional Notes
+                    </label>
+                    <textarea id="notes" name="notes" rows="3" 
+                              placeholder="Any additional information that might help us locate your report"
+                              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                <h3 class="font-semibold text-gray-900 mb-3">Order Summary</h3>
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-gray-600">Police Report Request</span>
+                    <span class="font-semibold text-gray-900">$49.00</span>
+                </div>
+                <div class="border-t pt-2 mt-2">
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold text-gray-900">Total</span>
+                        <span class="text-xl font-bold text-gray-900">$49.00</span>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 mt-3">
+                    <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    Secure payment powered by Stripe
+                </p>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="submit-button" 
+                    class="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-blue-700 transition flex items-center justify-center">
+                <span id="button-text">Proceed to Secure Payment</span>
+                <span id="spinner" class="spinner ml-3" style="display: none;"></span>
+            </button>
+
+            <p class="text-xs text-gray-500 text-center mt-4">
+                By submitting this request, you agree to our 
+                <a href="terms.html" class="text-blue-600 hover:text-blue-700">Terms of Service</a> and 
+                <a href="refunds.html" class="text-blue-600 hover:text-blue-700">Refund Policy</a>.
+            </p>
+        </form>
+
+        <!-- Trust Badges -->
+        <div class="mt-12 grid grid-cols-3 gap-4 text-center">
+            <div>
+                <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <p class="text-sm text-gray-600">Secure & Encrypted</p>
+            </div>
+            <div>
+                <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                </svg>
+                <p class="text-sm text-gray-600">48-Hour Processing</p>
+            </div>
+            <div>
+                <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"></path>
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"></path>
+                </svg>
+                <p class="text-sm text-gray-600">Money-Back Guarantee</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 mt-16">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
+            <p>&copy; 2024 Municipal Records Processing LLC. All rights reserved.</p>
+            <div class="mt-2 space-x-4">
+                <a href="terms.html" class="hover:text-white transition">Terms</a>
+                <a href="refunds.html" class="hover:text-white transition">Refunds</a>
+                <a href="contact.html" class="hover:text-white transition">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="order.js"></script>
+</body>
+</html>
